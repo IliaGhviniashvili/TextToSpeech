@@ -1,0 +1,15 @@
+{
+  "name": "splitsentencepy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+     "start": "C:/Users/Lingwing/AppData/Local/Programs/Python/Python313/python.exe main.py",
+     "startAudioToWords": "C:/Users/Lingwing/AppData/Local/Programs/Python/Python313/python.exe audioToWords.py",
+     "startAudioToWordsVosk": "C:/Users/Lingwing/AppData/Local/Programs/Python/Python313/python.exe audioToWordsVosk.py",
+     "startPrintTree": "C:/Users/Lingwing/AppData/Local/Programs/Python/Python313/python.exe printTree.py"
+
+  },
+  "author": "",
+  "license": "ISC"
+}
