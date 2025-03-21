@@ -1,7 +1,11 @@
 # Vosk model
 model/
 model-small/
+*.mdl
+*.fst
+model/**/*
+model-small/**/*
 
+# Node modules and lock file
 package-lock.json
 node_modules/
-
