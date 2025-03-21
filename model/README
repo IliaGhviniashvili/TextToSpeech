@@ -1,9 +1,7 @@
-US English model for mobile Vosk applications
+English model trained on gigaspeech with Vosk LM
 
-Copyright 2020 Alpha Cephei Inc
+https://kaldi-asr.org/models/m14
 
-Accuracy: 10.38 (tedlium test) 9.85 (librispeech test-clean)
-Speed: 0.11xRT (desktop)
-Latency: 0.15s (right context)
-
-
+Librispeech test-clean WER:  5.6%
+Tedlium WER:                 6.2%
+Callcenter WER:             30.2%

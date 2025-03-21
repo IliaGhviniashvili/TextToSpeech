@@ -52,7 +52,7 @@ class AudioSplitter:
 
         words_with_times = []
         while True:
-            data = wf.readframes(4000)
+            data = wf.readframes(512)
             if len(data) == 0:
                 break
             if rec.AcceptWaveform(data):
@@ -99,7 +99,7 @@ class AudioSplitter:
                 word_audio = audio[start_time:end_time]
                 
                 # Add small silence padding
-                silence = AudioSegment.silent(duration=50)
+                silence = AudioSegment.silent(duration=100)
                 word_audio = silence + word_audio + silence
                 
                 # Save word audio
@@ -135,17 +135,20 @@ def process_audio():
         print(f"Looking for model in: {model_path.absolute()}")
         
         splitter = AudioSplitter(
-            output_dir="split_audio_output",
+            # output_dir=current_dir / "words",
+            output_dir= "D:/Lingwing/dubbers/helpers/sonia",
             model_path=model_path
         )
         
         # Path to your audio file
-        audio_path = current_dir / "we-travelled.mp3"
-        
+        audio_path = current_dir / "words/ENGSPG000677-0710.mp3"
+
+        reference_text = "what's your favorite kind of farm animal?"
+            
         if not audio_path.exists():
             raise Exception(f"Audio file not found: {audio_path}")
             
-        result = splitter.split_audio_file(str(audio_path))
+        result = splitter.split_audio_file(str(audio_path), text=reference_text)
         
         if result:
             print("\nProcessed audio:")

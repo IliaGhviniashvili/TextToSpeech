@@ -1,0 +1,7 @@
+# Vosk model
+model/
+model-small/
+
+package-lock.json
+node_modules/
+

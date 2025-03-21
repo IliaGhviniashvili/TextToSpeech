@@ -5,9 +5,11 @@ import asyncio
 import edge_tts
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
+import json
+import subprocess
 
 class AudioSplitter:
-    def __init__(self, output_dir="audio_output", voice="en-US-ChristopherNeural"):
+    def __init__(self, output_dir="audio_output", voice="en-US-AvaMultilingualNeural"):
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(exist_ok=True)
         self.voice = voice
@@ -15,48 +17,19 @@ class AudioSplitter:
     def clean_filename(self, text):
         """Create a safe filename from text"""
         return "".join(x for x in text if x.isalnum() or x in "._- ")
-        
-    async def list_voices(self):
-        """List all available voices"""
-        voices = await edge_tts.list_voices()
-        for voice in voices:
-            print(f"Voice Name: {voice['Name']}")
-            print(f"Short Name: {voice['ShortName']}")
-            print(f"Gender: {voice['Gender']}")
-            print(f"Locale: {voice['Locale']}")
-            print("-------------------")
-        return voices
-        
+
     async def create_sentence_audio(self, text, sentence_id):
         """Create audio file from full sentence"""
-        filename = self.output_dir / f"sentence_{sentence_id}_{self.clean_filename(text)[:30]}.mp3"
+        formatted_id = f"ENGSPG{sentence_id:06d}-0810"
+        filename = self.output_dir / f"{formatted_id}.mp3"
+        
+        print(f"Creating audio file for sentence: {text}")
         
         communicate = edge_tts.Communicate(text, self.voice)
+        # communicate = edge_tts.Communicate(text, self.voice, rate='-10%')
         await communicate.save(str(filename))
         
         return filename
-
-    def split_audio_into_words(self, audio_path, text, sentence_id):
-        """Split sentence audio into individual word audio files"""
-        audio = AudioSegment.from_mp3(audio_path)
-        
-        # Parameters for splitting (may need adjustment)
-        chunks = split_on_silence(
-            audio,
-            min_silence_len=100,
-            silence_thresh=-40,
-            keep_silence=50
-        )
-        
-        words = text.split()
-        word_files = []
-        
-        for i, (chunk, word) in enumerate(zip(chunks, words)):
-            filename = self.output_dir / f"word_{sentence_id}_{i}_{self.clean_filename(word)}.mp3"
-            chunk.export(str(filename), format="mp3")
-            word_files.append(filename)
-            
-        return word_files
 
     async def process_sentence(self, text, sentence_id=1):
         try:
@@ -65,12 +38,12 @@ class AudioSplitter:
             sentence_file = await self.create_sentence_audio(text, sentence_id)
             print(f"Created sentence audio: {sentence_file}")
             
-            word_files = self.split_audio_into_words(sentence_file, text, sentence_id)
-            print(f"Created {len(word_files)} word audio files")
+            # word_files = self.split_audio_into_words(sentence_file, text, sentence_id)
+            # print(f"Created {len(word_files)} word audio files")
             
             return {
                 'sentence_file': sentence_file,
-                'word_files': word_files,
+                # 'word_files': word_files,
                 'text': text
             }
         except Exception as e:
@@ -93,16 +66,17 @@ class AudioSplitter:
 
 # Example usage
 async def process_my_sentences():
-    splitter = AudioSplitter(output_dir="my_audio_output", voice="en-US-ChristopherNeural")
+    output_path = "D:/Lingwing/dubbers/thomas" 
+    # output_path = Path(__file__).parent / "words"
+    splitter = AudioSplitter(output_dir=output_path, voice="en-GB-ThomasNeural")
     
     # Optional: List available voices
-    voices = await splitter.list_voices()
-    
-    sentences = [
-        "some text here"
-    ]
-    
+    # voices = await splitter.list_voices()
     try:
+        with open('sentences.json', 'r', encoding='utf-8') as file:
+            data = json.load(file)
+            sentences = data['sentences']
+            
         results = await splitter.process_multiple_sentences(sentences)
         
         # Print results
@@ -110,10 +84,24 @@ async def process_my_sentences():
             print("\nProcessed sentence:")
             print(f"Text: {result['text']}")
             print(f"Sentence audio: {result['sentence_file']}")
-            print(f"Word audio files: {result['word_files']}")
+            # print(f"Word audio files: {result['word_files']}")
+             # Run aToWVosk.py after processing is complete
+
+            #  this will autoamtically run the script to split the audio into words
+        # print("\nRunning aToWVosk.py...")
+        try:
+            subprocess.run([
+                "C:/Users/Lingwing/AppData/Local/Programs/Python/Python313/python.exe",
+                "aToWVosk.py"
+            ], check=True)
+            print("aToWVosk.py completed successfully")
+        except subprocess.CalledProcessError as e:
+            print(f"Error running aToWVosk.py: {str(e)}")
             
     except Exception as e:
         print(f"Error: {str(e)}")
 
 if __name__ == "__main__":
     asyncio.run(process_my_sentences())
+
+    
