@@ -261,8 +261,7 @@ def process_audio_folder():
         try:
             # Initialize splitter
             splitter = AudioSplitter(
-                # output_dir="D:/Lingwing/dubbers/thomas/words",
-                output_dir="C:/Users/Lingwing/Desktop/sampleaudios",
+                output_dir="D:/Lingwing/dubbers/thomas/words",
                 model_path=model_path
             )
         except Exception as e:
@@ -270,8 +269,7 @@ def process_audio_folder():
             return
 
         # Directory containing the sentence audio files
-        # input_dir = Path("D:/Lingwing/dubbers/thomas")
-        input_dir = Path("C:/Users/Lingwing/Desktop/sampleaudios")
+        input_dir = Path("D:/Lingwing/dubbers/thomas")
         print(f"Looking for audio files in: {input_dir}")
         
         try:
