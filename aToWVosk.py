@@ -193,7 +193,34 @@ class AudioSplitter:
         """Save word data to Excel file"""
         try:
             print(f"\nAttempting to save {len(self.word_data)} words to Excel...")
-            df = pd.DataFrame(self.word_data)
+            
+            filtered_word_data = []
+            current_sequence = 1
+            current_ordinal = None
+            has_hyphen = False
+            
+            for entry in self.word_data:
+                # Check if we're starting a new sentence
+                if current_ordinal != entry['ordinalNumber']:
+                    if has_hyphen:
+                        # If previous sentence had a hyphen, increment sequence to maintain gap
+                        current_sequence += 1
+                    current_ordinal = entry['ordinalNumber']
+                    has_hyphen = False
+                
+                if entry['word'] in ['-', '–', '—']:
+                    has_hyphen = True
+                    continue
+                
+                # Update the filename while keeping the -0810 suffix
+                original_filename = entry['fileName']
+                suffix = original_filename.split('-')[1]  # Get the '0810' part
+                new_filename = f"ENGSPGX{current_sequence:06d}-{suffix}"
+                entry['fileName'] = new_filename
+                filtered_word_data.append(entry)
+                current_sequence += 1
+            
+            df = pd.DataFrame(filtered_word_data)
             print("DataFrame created successfully")
             print("DataFrame contents:")
             print(df.head())  # Show first few rows
@@ -234,7 +261,8 @@ def process_audio_folder():
         try:
             # Initialize splitter
             splitter = AudioSplitter(
-                output_dir="D:/Lingwing/dubbers/thomas/words",
+                # output_dir="D:/Lingwing/dubbers/thomas/words",
+                output_dir="C:/Users/Lingwing/Desktop/sampleaudios",
                 model_path=model_path
             )
         except Exception as e:
@@ -242,11 +270,12 @@ def process_audio_folder():
             return
 
         # Directory containing the sentence audio files
-        input_dir = Path("D:/Lingwing/dubbers/thomas")
+        # input_dir = Path("D:/Lingwing/dubbers/thomas")
+        input_dir = Path("C:/Users/Lingwing/Desktop/sampleaudios")
         print(f"Looking for audio files in: {input_dir}")
         
         try:
-            audio_files = list(sorted(input_dir.glob("ENGSPG*.mp3")))
+            audio_files = list(sorted(input_dir.glob("ENGA1*.mp3")))
             print(f"Found {len(audio_files)} audio files")
         except Exception as e:
             print(f"Error finding audio files: {e}")
@@ -260,7 +289,7 @@ def process_audio_folder():
                     print(f"\nProcessing: {audio_file.name}")
                     
                     # Extract ordinal number from filename
-                    ordinal_match = re.search(r'ENGSPG(\d+)', audio_file.name)
+                    ordinal_match = re.search(r'ENGA1(\d+)', audio_file.name)
                     ordinal_number = int(ordinal_match.group(1)) if ordinal_match else i + 1
                     
                     # Get corresponding sentence

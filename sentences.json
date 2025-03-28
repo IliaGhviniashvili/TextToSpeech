@@ -1,11 +1,14 @@
 {
   "sentences": [
-    "Hello, how are you?",
-    "I am fine, thank you.",
-    "What is your name?",
-    "My name is John Doe.",
-    "What is your age?",
-    "I am 20 years old.",
-    "What is your favorite color?"
+    "Goodbye, Mr. Smith! - Good night, Anna!",
+    "Sleep well, Michael! - You, too, Anna!",
+    "Where are you? - I'm in Tokyo.",
+    "Is Emily from Brazil? - No, she isn’t. She’s English.",
+    "What's this? - This is my dog's house.",
+    "Who is this tall boy? - He's Steven. He's my friend from America.",
+    "Welcome to Spain! - Thank you! We are very happy here.",
+    "Can you answer this question? - No, I don’t know the answer.",
+    "Do you speak German here? - No, we only speak English.",
+    "Do you want to eat pizza? - No, I'm not hungry, thanks."
   ]
 }

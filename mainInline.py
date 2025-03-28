@@ -111,13 +111,13 @@ class AudioSplitter:
 async def process_my_sentences():
     # output_path = "D:/Lingwing/dubbers/helpers/thomas" 
     output_path = Path(__file__).parent / "words"
-    splitter = AudioSplitter(output_dir=output_path, voice="en-US-EmmaMultilingualNeural")
+    splitter = AudioSplitter(output_dir=output_path, voice="en-GB-ThomasNeural")
     
     # Optional: List available voices
     # voices = await splitter.list_voices()
     
     sentences = [
-        "Hello. I'm Emma. This is my voice."
+        "do you have free time tomorrow?"
     ]
     
     try:
