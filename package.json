@@ -5,12 +5,12 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "C:/Users/Lingwing/AppData/Local/Programs/Python/Python313/python.exe main.py",
-    "startInline": "C:/Users/Lingwing/AppData/Local/Programs/Python/Python313/python.exe mainInline.py",
-    "startAudioToWords": "C:/Users/Lingwing/AppData/Local/Programs/Python/Python313/python.exe audioToWords.py",
-    "startAudioToWordsVosk": "C:/Users/Lingwing/AppData/Local/Programs/Python/Python313/python.exe audioToWordsVosk.py",
-    "startPrintTree": "C:/Users/Lingwing/AppData/Local/Programs/Python/Python313/python.exe printTree.py",
-    "aToWVosk": "C:/Users/Lingwing/AppData/Local/Programs/Python/Python313/python.exe aToWVosk.py",
+    "start": "C:/Python313/python.exe main.py",
+    "startInline": "C:/Python313/python.exe mainInline.py",
+    "startAudioToWords": "C:/Python313/python.exe audioToWords.py",
+    "startAudioToWordsVosk": "C:/Python313/python.exe audioToWordsVosk.py",
+    "startPrintTree": "C:/Python313/python.exe printTree.py",
+    "aToWVosk": "C:/Python313/python.exe aToWVosk.py",
     "startSpeechToText": "node speechToText.js",
     "startElevenLabs": "node elevenLabs.js"
   },

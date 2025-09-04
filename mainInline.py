@@ -12,44 +12,18 @@ from mutagen.id3 import ID3, TIT2
 class AudioSplitter:
     def __init__(self, output_dir="audio_output", voice="en-US-AvaMultilingualNeural"):
         self.output_dir = Path(output_dir)
-        self.output_dir.mkdir(exist_ok=True)
+        # Create all directories in the path
+        self.output_dir.mkdir(parents=True, exist_ok=True)
         self.voice = voice
     
     def clean_filename(self, text):
         """Create a safe filename from text"""
         return "".join(x for x in text if x.isalnum() or x in "._- ")
-        
-    # async def list_voices(self):
-    #     """List all available voices and save to JSON"""
-    #     voices = await edge_tts.list_voices()
-        
-    #     # Create a more readable format for the JSON
-    #     voice_data = [{
-    #         'name': voice['Name'],
-    #         'short_name': voice['ShortName'],
-    #         'gender': voice['Gender'],
-    #         'locale': voice['Locale']
-    #     } for voice in voices]
-        
-    #     # Save to JSON file
-    #     json_path = Path(__file__).parent / 'available_voices.json'
-    #     with open(json_path, 'w', encoding='utf-8') as f:
-    #         json.dump(voice_data, f, indent=2)
-        
-    #     # Also print to console
-    #     for voice in voices:
-    #         print(f"Voice Name: {voice['Name']}")
-    #         print(f"Short Name: {voice['ShortName']}")
-    #         print(f"Gender: {voice['Gender']}")
-    #         print(f"Locale: {voice['Locale']}")
-    #         print("-------------------")
-            
-    #     return voices
 
         
     async def create_sentence_audio(self, text, sentence_id):
         """Create audio file from full sentence"""
-        formatted_id = f"ENGSPG{sentence_id:06d}-0810"
+        formatted_id = f"ENGA1{sentence_id:06d}-0000"
         filename = self.output_dir / f"{formatted_id}.mp3"
         
         print(f"Creating audio file for sentence: {text}")
@@ -109,17 +83,17 @@ class AudioSplitter:
 
 # Example usage
 async def process_my_sentences():
-    # output_path = "D:/Lingwing/dubbers/helpers/thomas" 
-    output_path = Path(__file__).parent / "words"
-    splitter = AudioSplitter(output_dir=output_path, voice="en-GB-ThomasNeural")
+    output_path = Path(r"C:\Users\sikha\Downloads\audios\AvaUSgapsSAMPLES")  # Your specified path
+    splitter = AudioSplitter(output_dir=output_path, voice="en-US-AvaMultilingualNeural")
     
     # Optional: List available voices
     # voices = await splitter.list_voices()
     
     sentences = [
-        "do you have free time tomorrow?"
-    ]
-    
+    "Where is the clothes shop? - It's there, on the right."
+
+      ]
+
     try:
         results = await splitter.process_multiple_sentences(sentences)
         
@@ -135,5 +109,5 @@ async def process_my_sentences():
 
 if __name__ == "__main__":
     asyncio.run(process_my_sentences())
-
+ 
     

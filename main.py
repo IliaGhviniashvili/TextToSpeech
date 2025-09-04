@@ -9,9 +9,9 @@ import json
 import subprocess
 
 class AudioSplitter:
-    def __init__(self, output_dir="audio_output", voice="en-US-AvaMultilingualNeural"):
+    def __init__(self, output_dir="audio_output", voice="en-US-EmmaMultilingualNeural"):
         self.output_dir = Path(output_dir)
-        self.output_dir.mkdir(exist_ok=True)
+        self.output_dir.mkdir(parents=True, exist_ok=True)
         self.voice = voice
     
     def clean_filename(self, text):
@@ -20,7 +20,7 @@ class AudioSplitter:
 
     async def create_sentence_audio(self, text, sentence_id):
         """Create audio file from full sentence"""
-        formatted_id = f"ENGSPG{sentence_id:06d}-0810"
+        formatted_id = f"ENGA1{sentence_id:06d}-0200"
         filename = self.output_dir / f"{formatted_id}.mp3"
         
         print(f"Creating audio file for sentence: {text}")
@@ -66,9 +66,9 @@ class AudioSplitter:
 
 # Example usage
 async def process_my_sentences():
-    output_path = "D:/Lingwing/dubbers/thomas" 
+    output_path = str(Path.home() / "Downloads" / "audios"/ "EmmaUSgaps")
     # output_path = Path(__file__).parent / "words"
-    splitter = AudioSplitter(output_dir=output_path, voice="en-GB-ThomasNeural")
+    splitter = AudioSplitter(output_dir=output_path, voice="en-US-EmmaMultilingualNeural")
     
     # Optional: List available voices
     # voices = await splitter.list_voices()
@@ -91,7 +91,7 @@ async def process_my_sentences():
         # print("\nRunning aToWVosk.py...")
         try:
             subprocess.run([
-                "C:/Users/Lingwing/AppData/Local/Programs/Python/Python313/python.exe",
+                "C:/Python313/python.exe",
                 "aToWVosk.py"
             ], check=True)
             print("aToWVosk.py completed successfully")

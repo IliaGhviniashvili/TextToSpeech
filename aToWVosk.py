@@ -107,7 +107,7 @@ class AudioSplitter:
             
             # First, process the original words
             for i, original_word in enumerate(original_words):
-                filename = f"ENGSPGX{self.current_word_number:06d}-0810"
+                filename = f"ENGA1X{self.current_word_number:06d}-0200"
                 
                 word_data = {
                     'word': original_word,
@@ -146,7 +146,7 @@ class AudioSplitter:
                 
                 # Create filename with _X suffix for extra words
                 extra_number = i - original_word_count + 1
-                filename = f"ENGSPGX{last_original_word_number}_{extra_number}-0810"
+                filename = f"ENGA1X{last_original_word_number}_{extra_number}-0200"
                 
                 word_data = {
                     'word': extra_word,
@@ -215,7 +215,7 @@ class AudioSplitter:
                 # Update the filename while keeping the -0810 suffix
                 original_filename = entry['fileName']
                 suffix = original_filename.split('-')[1]  # Get the '0810' part
-                new_filename = f"ENGSPGX{current_sequence:06d}-{suffix}"
+                new_filename = f"ENGB1X{current_sequence:06d}-{suffix}"
                 entry['fileName'] = new_filename
                 filtered_word_data.append(entry)
                 current_sequence += 1
@@ -261,7 +261,7 @@ def process_audio_folder():
         try:
             # Initialize splitter
             splitter = AudioSplitter(
-                output_dir="D:/Lingwing/dubbers/thomas/words",
+                output_dir=str(Path.home() / "Downloads" / "EmmaUSgapsWORDS"),
                 model_path=model_path
             )
         except Exception as e:
@@ -269,11 +269,11 @@ def process_audio_folder():
             return
 
         # Directory containing the sentence audio files
-        input_dir = Path("D:/Lingwing/dubbers/thomas")
+        input_dir = Path.home() / "Downloads" / "audios" / "EmmaUSgaps"
         print(f"Looking for audio files in: {input_dir}")
         
         try:
-            audio_files = list(sorted(input_dir.glob("ENGA1*.mp3")))
+            audio_files = list(sorted(input_dir.glob("ENGB1*.mp3")))
             print(f"Found {len(audio_files)} audio files")
         except Exception as e:
             print(f"Error finding audio files: {e}")
@@ -287,7 +287,7 @@ def process_audio_folder():
                     print(f"\nProcessing: {audio_file.name}")
                     
                     # Extract ordinal number from filename
-                    ordinal_match = re.search(r'ENGA1(\d+)', audio_file.name)
+                    ordinal_match = re.search(r'ENGB1(\d+)', audio_file.name)
                     ordinal_number = int(ordinal_match.group(1)) if ordinal_match else i + 1
                     
                     # Get corresponding sentence
@@ -303,7 +303,7 @@ def process_audio_folder():
                             print(f"Current word_data length: {len(splitter.word_data)}")
                             
                             # Save Excel and mismatches every 100 files
-                            if (i + 1) % 100 == 0:
+                            if (i + 1) % 500 == 0:
                                 try:
                                     # Save partial Excel
                                     excel_file = input_dir / f"word_data_partial_{i+1}.xlsx"
