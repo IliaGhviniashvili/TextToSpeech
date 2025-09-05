@@ -136,7 +136,8 @@ def process_audio():
         
         splitter = AudioSplitter(
             # output_dir=current_dir / "words",
-            output_dir= "D:/Lingwing/dubbers/helpers/sonia",
+            # output_dir= "D:/Lingwing/dubbers/helpers/sonia",
+            output_dir= current_dir / "helpers/sonia",
             model_path=model_path
         )
         

@@ -9,3 +9,6 @@ model-small/**/*
 # Node modules and lock file
 package-lock.json
 node_modules/
+
+# macos
+.DS_Store
